@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <Windows.h>
@@ -47,8 +48,6 @@
 #define MOUSERIGHTUP MOUSEEVENTF_RIGHTUP
 #define MOUSEMIDDLEDOWN MOUSEEVENTF_MIDDLEDOWN
 #define MOUSEMIDDLEUP MOUSEEVENTF_MIDDLEUP
-
-
 
 
 class Cobalt {

@@ -1,3 +1,4 @@
+
 #include "LibInit.h";
 
 // ---------- String ---------- //
@@ -41,7 +42,7 @@ HANDLE Cobalt::Process::AttachPID(DWORD access, DWORD PID) {
 }
 
 HANDLE Cobalt::Process::AttachName(DWORD access, std::string windowName) {
-	HWND hwnd = FindWindow(NULL, windowName.c_str());
+	HWND hwnd = FindWindow(NULL, (LPCWSTR)windowName.c_str());
 	DWORD PID;
 	GetWindowThreadProcessId(hwnd, &PID);
 	HANDLE handle = OpenProcess(access, NULL, PID);
@@ -56,7 +57,7 @@ HANDLE Cobalt::Process::AttachName(DWORD access, std::string windowName) {
 // ---------- Window ---------- //
 
 HWND Cobalt::Window::GetWindow(std::string procName) {
-	HWND hwnd = FindWindow(NULL, procName.c_str());
+	HWND hwnd = FindWindow(NULL, (LPCWSTR)procName.c_str());
 	if (hwnd) {
 		return hwnd;
 	}
@@ -80,6 +81,7 @@ HANDLE Cobalt::Window::GetHandleFromHWND(DWORD access, HWND hwnd) {
 	}
 	else {
 		std::cout << "[ERROR] AttachName function couldn't attach to the process. \n";
+		return nullptr;
 	}
 }
 
@@ -180,7 +182,7 @@ DWORD Cobalt::Memory::GetModuleBaseAddress32b(std::string moduleName, DWORD PID)
 		if (Module32First(hSnapshot, &ModuleEntry32))
 		{
 			do {
-				if (_tcscmp(ModuleEntry32.szModule, moduleName.c_str()) == 0)
+				if (_tcscmp(ModuleEntry32.szModule, (wchar_t*)moduleName.c_str()) == 0)
 				{
 					dwModuleBaseAddress = (DWORD)ModuleEntry32.modBaseAddr;
 					break;
@@ -202,7 +204,7 @@ uintptr_t Cobalt::Memory::GetModuleBaseAddress64b(std::string moduleName, DWORD 
 	if (Module32First(hSnapshot, &ModuleEntry32))
 	{
 		do {
-			if (_tcscmp(ModuleEntry32.szModule, moduleName.c_str()) == 0)
+			if (_tcscmp(ModuleEntry32.szModule, (wchar_t*)moduleName.c_str()) == 0)
 			{
 				dwModuleBaseAddress = (uintptr_t)ModuleEntry32.modBaseAddr;
 				break;
@@ -259,4 +261,5 @@ void Cobalt::Console::removescrollbar() {
 void Cobalt::Console::showconsole(DWORD setting) {
 	ShowWindow(GetConsoleWindow(), setting);
 }
+
 
